@@ -1,8 +1,9 @@
 // import React from 'react'
 /* eslint-disable react/no-unescaped-entities */
 
-import { Navbar } from 'flowbite-react';
+import { Navbar, TextInput } from 'flowbite-react';
 import { Link } from 'react-router-dom';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 const Header = () => {
   return (
@@ -16,6 +17,14 @@ const Header = () => {
           </span>
           Blog
         </Link>
+        <form>
+          <TextInput
+            type='text'
+            placeholder='search'
+            rightIcon={AiOutlineSearch}
+            className='hidden lg:inline'
+          />
+        </form>
       </Navbar>
     </div>
   );
