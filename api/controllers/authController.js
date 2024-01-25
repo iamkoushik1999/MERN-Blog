@@ -1,6 +1,6 @@
 // Packages
 const bcryptjs = require('bcryptjs');
-
+const asyncHandler = require('express-async-handler');
 // Models
 const userModel = require('../models/userModel');
 
@@ -8,7 +8,7 @@ const userModel = require('../models/userModel');
 
 // POST
 // Sign Up
-exports.signup = async (req, res) => {
+exports.signup = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
   if (
     !username ||
@@ -18,7 +18,14 @@ exports.signup = async (req, res) => {
     email === '' ||
     password === ''
   ) {
-    return res.status(400).json({ message: 'All Fields are required' });
+    res.status(400);
+    throw new Error('All Fields are required');
+  }
+
+  const userExists = await userModel.find({ username, email });
+  if (userExists) {
+    res.status(400);
+    throw new Error('User exists... try different one');
   }
 
   const hashedPassword = bcryptjs.hashSync(password, 10);
@@ -30,8 +37,13 @@ exports.signup = async (req, res) => {
       password: hashedPassword,
     });
 
-    res.status(200).json({ message: 'Sign up successfully', newUser });
+    res.status(200).json({
+      success: true,
+      message: 'Sign up successfully',
+      newUser,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500);
+    throw new Error('Internal server error');
   }
-};
+});
