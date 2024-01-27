@@ -22,7 +22,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
     throw new Error('All Fields are required');
   }
 
-  const userExists = await userModel.find({ username, email });
+  const userExists = await userModel.findOne({ username, email });
   if (userExists) {
     res.status(400);
     throw new Error('User exists... try different one');
@@ -37,7 +37,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
       password: hashedPassword,
     });
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: 'Sign up successfully',
       newUser,
