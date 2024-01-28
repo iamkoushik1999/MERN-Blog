@@ -81,5 +81,5 @@ exports.signin = asyncHandler(async (req, res, next) => {
     .cookie('access_token', token, {
       httpOnly: true,
     })
-    .json({ message: 'Signin successful', userData });
+    .json({ success: true, message: 'Signin successful', userData });
 });
