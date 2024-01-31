@@ -83,3 +83,50 @@ exports.signin = asyncHandler(async (req, res, next) => {
     })
     .json({ success: true, message: 'Signin successful', userData });
 });
+
+// POST
+// Google Auth
+exports.googleAuth = asyncHandler(async (req, res, next) => {
+  const { name, email, googlePhotoUrl } = req.body;
+  try {
+    const user = await userModel.findOne({ email });
+    if (user) {
+      const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1d' });
+      const { password: pass, ...userData } = user._doc;
+      res
+        .status(200)
+        .cookie('access_token', token, {
+          httpOnly: true,
+        })
+        .json({ success: true, userData });
+    } else {
+      const generatedName =
+        name.toLowerCase().split(' ').join('') +
+        Math.random().toString(9).slice(-4);
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+
+      const user = await userModel.create({
+        username: generatedName,
+        email: email,
+        password: hashedPassword,
+        profilePicture: googlePhotoUrl,
+      });
+      const token = jwt.sign({ id: user._id }, SECRET_KEY, {
+        expiresIn: '1d',
+      });
+      const { password: pass, ...userData } = user._doc;
+      res
+        .status(200)
+        .cookie('access_token', token, {
+          httpOnly: true,
+        })
+        .json({ success: true, userData });
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error('Internal Server Error');
+  }
+});
