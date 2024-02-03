@@ -1,10 +1,13 @@
 const router = require('express').Router();
 // Controllers
-const { test } = require('../controllers/userController');
+const { updateUser } = require('../controllers/userController');
+// Utils
+const { verifyUser } = require('../utils/verifyUser');
 
 // ----------------------------------------------------------- User Routes -----------------------------------------------------------
-// GET
-// Test
-router.get('/test', test);
+
+// PUT
+// Update User
+router.put('/update/:userId', verifyUser, updateUser);
 
 module.exports = router;
