@@ -43,31 +43,31 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
       res.status(400);
       throw new Error('Username can only contain letters and numbers');
     }
-    // Update user
-    try {
-      const updatedUser = await userModel.findByIdAndUpdate(
-        userId,
-        {
-          $set: {
-            username: username,
-            email: email,
-            profilePicture: profilePicture,
-            password: req.body.password,
-          },
+  }
+  // Update user
+  try {
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          username: username,
+          email: email,
+          profilePicture: profilePicture,
+          password: req.body.password,
         },
-        { new: true }
-      );
+      },
+      { new: true }
+    );
 
-      const { password, ...userData } = updatedUser._doc;
+    const { password, ...userData } = updatedUser._doc;
 
-      res.status(200).json({
-        success: true,
-        message: 'User updated successfully',
-        userData,
-      });
-    } catch (error) {
-      res.status(500);
-      throw new Error(error);
-    }
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully',
+      userData,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
   }
 });
