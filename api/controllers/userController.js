@@ -71,3 +71,22 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
     throw new Error(error);
   }
 });
+
+// Delete
+// Delete User
+exports.deleteUser = asyncHandler(async (req, res, next) => {
+  const { userId } = req.params;
+
+  if (req.user.id !== userId) {
+    res.status(403);
+    throw new Error('Forbidden');
+  }
+
+  try {
+    await userModel.findByIdAndDelete(userId);
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
