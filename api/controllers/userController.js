@@ -93,3 +93,17 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
     throw new Error(error);
   }
 });
+
+// POST
+// Sign Out
+exports.signOut = asyncHandler(async (req, res, next) => {
+  try {
+    res.clearCookie('access_token').status(200).json({
+      success: true,
+      message: 'User has been signed out',
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
