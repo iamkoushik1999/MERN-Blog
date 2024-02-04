@@ -84,7 +84,10 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 
   try {
     await userModel.findByIdAndDelete(userId);
-    res.status(200).json({ message: 'User deleted successfully' });
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully',
+    });
   } catch (error) {
     res.status(500);
     throw new Error(error);
