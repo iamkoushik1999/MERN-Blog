@@ -74,7 +74,9 @@ exports.signin = asyncHandler(async (req, res, next) => {
     throw new Error('Invalid Credentials');
   }
 
-  const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1d' });
+  const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, SECRET_KEY, {
+    expiresIn: '1d',
+  });
 
   res
     .status(200)
@@ -114,9 +116,13 @@ exports.googleAuth = asyncHandler(async (req, res, next) => {
         password: hashedPassword,
         profilePicture: googlePhotoUrl,
       });
-      const token = jwt.sign({ id: user._id }, SECRET_KEY, {
-        expiresIn: '1d',
-      });
+      const token = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        SECRET_KEY,
+        {
+          expiresIn: '1d',
+        }
+      );
       const { password: pass, ...userData } = user._doc;
       res
         .status(200)
