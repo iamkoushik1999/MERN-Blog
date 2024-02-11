@@ -23,16 +23,17 @@ const CreatePost = () => {
   const [publishError, setPublishError] = useState(null);
   const navigate = useNavigate();
 
-  const handleUploadImage = async () => {
+  const handleUpdloadImage = async () => {
     try {
       if (!file) {
         setImageUploadError('Please select an image');
         return;
       }
+      setImageUploadError(null);
       const storage = getStorage(app);
       const fileName = new Date().getTime() + '-' + file.name;
       const storageRef = ref(storage, fileName);
-      const uploadTask = uploadBytesResumable(storageRef, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -96,14 +97,14 @@ const CreatePost = () => {
             required
             id='title'
             className='flex-1'
-            onChange={(e) => {
-              setFormData({ ...formData, title: e.target.value });
-            }}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
           <Select
-            onChange={(e) => {
-              setFormData({ ...formData, category: e.target.value });
-            }}>
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }>
             <option value='uncategorized'>Select a category</option>
             <option value='javascript'>JavaScript</option>
             <option value='react'>React.js</option>
@@ -121,13 +122,13 @@ const CreatePost = () => {
             gradientDuoTone={'purpleToBlue'}
             size={'sm'}
             outline
-            onClick={handleUploadImage}
-            disable={imageUploadProgress}>
+            onClick={handleUpdloadImage}
+            disabled={imageUploadProgress}>
             {imageUploadProgress ? (
               <div className='w-16 h-16'>
                 <CircularProgressbar
-                  value={imageUploadProgress || 0}
-                  text={`${imageUploadProgress}%`}
+                  value={imageUploadProgress}
+                  text={`${imageUploadProgress || 0}%`}
                 />
               </div>
             ) : (
