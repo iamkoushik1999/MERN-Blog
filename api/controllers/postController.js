@@ -83,3 +83,19 @@ exports.getPosts = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+// DELETE
+// DELETE Posts
+exports.deletePost = asyncHandler(async (req, res) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    res.status(403);
+    throw new Error('You are not allowed to delete a post');
+  }
+  try {
+    await postModel.findByIdAndDelete(req.params.postId);
+    res.status(200).json({ success: true, message: 'Post has been deleted' });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
