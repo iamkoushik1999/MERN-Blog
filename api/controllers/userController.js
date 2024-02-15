@@ -107,3 +107,50 @@ exports.signOut = asyncHandler(async (req, res, next) => {
     throw new Error(error);
   }
 });
+
+// GET
+// Get Users
+exports.getUsers = asyncHandler(async (req, res) => {
+  if (!req.user.isAdmin) {
+    res.status(403);
+    throw new Error('You are not allowed see all users');
+  }
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sort === 'asc' ? 1 : -1;
+    const users = await userModel
+      .find()
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+    // .select('-password');
+
+    const usersWithoutPassword = users.map((user) => {
+      const { password, ...rest } = user._doc;
+      return rest;
+    });
+
+    const totalUsers = await userModel.countDocuments();
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthUsers = await userModel.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    res.status(200).json({
+      // users,
+      users: usersWithoutPassword,
+      totalUsers,
+      lastMonthUsers,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
