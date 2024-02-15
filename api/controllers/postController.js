@@ -99,3 +99,34 @@ exports.deletePost = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+// PUT
+// UPDATE Posts
+exports.updatePost = asyncHandler(async (req, res) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    res.status(403);
+    throw new Error('You are not allowed to update a post');
+  }
+  try {
+    const updatedPost = await postModel.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          category: req.body.category,
+          image: req.body.image,
+          content: req.body.content,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json({
+      success: true,
+      message: 'Post has been updated',
+      updatedPost,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});

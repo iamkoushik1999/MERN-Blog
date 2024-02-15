@@ -4,6 +4,7 @@ const {
   createPost,
   getPosts,
   deletePost,
+  updatePost,
 } = require('../controllers/postController');
 // Utils
 const { verifyUser } = require('../utils/verifyUser');
@@ -20,5 +21,9 @@ router.get('/getposts', getPosts);
 // DELETE
 // Delete Post
 router.delete('/deletepost/:postId/:userId', verifyUser, deletePost);
+
+// PUT
+// Update Post
+router.put('/updatepost/:postId/:userId', verifyUser, updatePost);
 
 module.exports = router;
