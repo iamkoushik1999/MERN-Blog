@@ -77,9 +77,9 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 exports.deleteUser = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
 
-  if (req.user.id !== userId) {
+  if (!req.user.isAdmin && req.user.id !== userId) {
     res.status(403);
-    throw new Error('Forbidden');
+    throw new Error('You are not allowed to delete this user');
   }
 
   try {
