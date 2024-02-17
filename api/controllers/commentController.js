@@ -31,3 +31,22 @@ exports.createComment = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+// GET
+// GET Comments
+exports.getPostComments = asyncHandler(async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const comments = await commentModel
+      .find({ postId })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      comments,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});

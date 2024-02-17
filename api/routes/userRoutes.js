@@ -5,6 +5,7 @@ const {
   deleteUser,
   signOut,
   getUsers,
+  getUser,
 } = require('../controllers/userController');
 // Utils
 const { verifyUser } = require('../utils/verifyUser');
@@ -26,5 +27,9 @@ router.post('/signout', signOut);
 // GET
 // Get Users
 router.get('/getusers', verifyUser, getUsers);
+
+// GET
+// Get User
+router.get('/:userId', getUser);
 
 module.exports = router;

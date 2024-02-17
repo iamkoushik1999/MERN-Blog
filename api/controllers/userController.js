@@ -154,3 +154,22 @@ exports.getUsers = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+// GET
+// Get User
+exports.getUser = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const userData = await userModel.findById(userId);
+    if (!userData) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+    const { password, ...user } = userData._doc;
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
