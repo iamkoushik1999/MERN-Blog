@@ -4,6 +4,7 @@ const {
   createComment,
   getPostComments,
   likeComment,
+  editComment,
 } = require('../controllers/commentController');
 // Utils
 const { verifyUser } = require('../utils/verifyUser');
@@ -18,7 +19,11 @@ router.post('/create', verifyUser, createComment);
 router.get('/getPostComments/:postId', getPostComments);
 
 // PUT
-// Loke Comments
+// Like Comments
 router.put('/likeComment/:commentId', verifyUser, likeComment);
+
+// PUT
+// Edit Comments
+router.put('/editComment/:commentId', verifyUser, editComment);
 
 module.exports = router;
