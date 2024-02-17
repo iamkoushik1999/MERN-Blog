@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Spinner, Button } from 'flowbite-react';
 import CallToAction from '../components/CallToAction';
+import CommentSection from '../components/CommentSection';
 
 const PostPage = () => {
   const { postSlug } = useParams();
@@ -16,7 +17,7 @@ const PostPage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        setLoading(false);
+        setLoading(true);
         const res = await fetch(`/api/v1/post/getposts?slug=${postSlug}`);
         const data = await res.json();
         if (!res.ok) {
@@ -73,6 +74,7 @@ const PostPage = () => {
       <div className='max-w-4xl mx-auto w-full'>
         <CallToAction />
       </div>
+      <CommentSection postId={post._id} />
     </main>
   );
 };

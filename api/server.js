@@ -16,6 +16,7 @@ const errorMiddleware = require('./middleware/errorMiddleware');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const postRoutes = require('./routes/postRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,6 +30,7 @@ app.get('/', (req, res) => res.send('Server Running Successfully!'));
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/post', postRoutes);
+app.use('/api/v1/comment', commentRoutes);
 
 // Middleware
 app.use(errorMiddleware);
