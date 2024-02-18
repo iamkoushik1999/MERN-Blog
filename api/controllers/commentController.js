@@ -136,3 +136,44 @@ exports.deleteComment = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+// GET
+// GET Comments
+exports.getComments = asyncHandler(async (req, res) => {
+  if (!req.user.isAdmin) {
+    res.status(403);
+    throw new Error('You are not allowed see all comments');
+  }
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sort === 'asc' ? 1 : -1;
+    const comments = await commentModel
+      .find()
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    const totalComments = await commentModel.countDocuments();
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthComments = await commentModel.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    res.status(200).json({
+      comments,
+      totalComments,
+      lastMonthComments,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+``;

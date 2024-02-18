@@ -6,6 +6,7 @@ const {
   likeComment,
   editComment,
   deleteComment,
+  getComments,
 } = require('../controllers/commentController');
 // Utils
 const { verifyUser } = require('../utils/verifyUser');
@@ -30,5 +31,9 @@ router.put('/editComment/:commentId', verifyUser, editComment);
 // Delete
 // Delete Comments
 router.delete('/deleteComment/:commentId', verifyUser, deleteComment);
+
+// GET
+// Get Comments
+router.get('/getcomments', verifyUser, getComments);
 
 module.exports = router;
