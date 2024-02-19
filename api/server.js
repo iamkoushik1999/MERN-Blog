@@ -4,7 +4,7 @@ require('colors');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 const app = express();
 // ENV
 const { ENV_PORT } = process.env;
