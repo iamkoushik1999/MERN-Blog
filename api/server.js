@@ -33,9 +33,9 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/post', postRoutes);
 app.use('/api/v1/comment', commentRoutes);
 
-app.use(express.static(path.join(__dirname, '/client/dist')));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 // Middleware
