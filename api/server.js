@@ -4,7 +4,6 @@ require('colors');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
-// const __dirname = path.resolve();
 const app = express();
 // ENV
 const { ENV_PORT } = process.env;
@@ -25,8 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors('*'));
 
-// Test Route
-app.get('/', (req, res) => res.send('Server Running Successfully!'));
+// // Test Route
+// app.get('/', (req, res) => res.send('Server Running Successfully!'));
 
 // Routes
 app.use('/api/v1/user', userRoutes);
